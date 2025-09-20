@@ -1,3 +1,5 @@
+import sys
+sys.path.append('/opt/venv/lib/python3.9/site-packages')
 import requests
 import openai
 import time
