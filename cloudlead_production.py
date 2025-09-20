@@ -283,7 +283,12 @@ if __name__ == "__main__":
     # Start web server for webhooks
     from threading import Thread
     port = int(os.getenv('PORT', 5000))
+    
+    # Start both web server and automation
     Thread(target=lambda: app.run(host='0.0.0.0', port=port, debug=False)).start()
+    
+    # Give web server a moment to start
+    time.sleep(2)
     
     # Start automation
     automation = CloudLeadProduction()
