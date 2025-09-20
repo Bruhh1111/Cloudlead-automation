@@ -227,6 +227,45 @@ def handle_project():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
+def get_new_projects(self):
+    """DEBUG VERSION - Get projects with status 'New'"""
+    try:
+        print("🔄 Checking Airtable for new projects...")
+        print(f"📋 Using Base ID: {self.base_id}")
+        
+        # Test the connection first
+        test_url = f"{self.base_url}/Projects"
+        print(f"🔗 API URL: {test_url}")
+        
+        response = requests.get(test_url, headers=self.headers)
+        print(f"📊 HTTP Status: {response.status_code}")
+        
+        if response.status_code != 200:
+            print(f"❌ ERROR: {response.text}")
+            return []
+        
+        projects = response.json().get("records", [])
+        print(f"✅ Found {len(projects)} total projects")
+        
+        # Check each project's status
+        new_projects = []
+        for i, project in enumerate(projects):
+            fields = project.get("fields", {})
+            status = fields.get("Status")
+            name = fields.get("Project Name", "Unnamed")
+            print(f"   {i+1}. {name} - Status: '{status}'")
+            
+            if status == "New":
+                new_projects.append(project)
+                print(f"      🎯 NEW PROJECT DETECTED!")
+        
+        print(f"🎯 Total new projects found: {len(new_projects)}")
+        return new_projects
+        
+    except Exception as e:
+        print(f"💥 Exception: {str(e)}")
+        return []
+
 if __name__ == "__main__":
     # Start web server for webhooks
     from threading import Thread
