@@ -1,0 +1,9 @@
+{
+    "build": {
+        "builder": "NIXPACKS"
+    },
+    "deploy": {
+        "startCommand": "python cloudlead_production.py",
+        "restartPolicyType": "ON_FAILURE"
+    }
+}
